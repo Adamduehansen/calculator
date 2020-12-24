@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-export type Operator = 'Add';
+export type Operator = 'Add' | 'Subtract' | 'Times' | 'Divide';
 
 const useCalculator = function () {
   const [numberFieldValue, setNumberFieldValue] = useState<string>('0');
-  const [operator, setOperator] = useState<Operator>();
   const [startNewNumber, setStartNewNumber] = useState<boolean>(false);
-  const [valueA, setValueA] = useState<number>(0);
+  const [valueA, setValueA] = useState(0);
 
   const addToNumberField = useCallback(
     (number: number) => {
@@ -20,9 +19,35 @@ const useCalculator = function () {
     [startNewNumber]
   );
 
-  const changeOperator = useCallback((operator: Operator) => {
-    setStartNewNumber(true);
-  }, []);
+  const changeOperator = useCallback(
+    (operator: Operator) => {
+      setStartNewNumber(true);
+      const enteredValue = parseInt(numberFieldValue);
+      const result = getResult(operator, valueA, enteredValue);
+      setValueA(result);
+      setNumberFieldValue(result.toString());
+    },
+    [numberFieldValue, valueA]
+  );
+
+  const getResult = function (
+    operator: Operator,
+    valueA: number,
+    valueB: number
+  ) {
+    switch (operator) {
+      case 'Add':
+        return valueA + valueB;
+      case 'Subtract':
+        return valueA - valueB;
+      case 'Times':
+        return (valueA === 0 ? 1 : valueA) * valueB;
+      case 'Divide':
+        return valueA === 0 ? valueB / 1 : valueA / valueB;
+      default:
+        throw Error('Operator not implemented.');
+    }
+  };
 
   return {
     numberFieldValue,

@@ -82,33 +82,43 @@ describe('useCalculator', () => {
       expect(result.current.numberFieldValue).toEqual('2');
     });
 
-    // test('should calculate result with multiple operators', () => {
-    //   // Arrange
-    //   const { result } = renderHook(() => useCalculator());
+    test.each([
+      ['Add' as Operator, 2, 3, 2, '7'],
+      ['Subtract' as Operator, 2, 3, 2, '-7'],
+      ['Times' as Operator, 2, 3, 2, '12'],
+      ['Divide' as Operator, 8, 2, 4, '1'],
+    ])(
+      'should calculate result with multiple operators',
+      (operator, valueA, valueB, valueC, expectedNumberFieldValue) => {
+        // Arrange
+        const { result } = renderHook(() => useCalculator());
 
-    //   // Act
-    //   act(() => {
-    //     result.current.addToNumberField(2);
-    //   });
-    //   act(() => {
-    //     result.current.changeOperator('Add');
-    //   });
-    //   act(() => {
-    //     result.current.addToNumberField(2);
-    //   });
-    //   act(() => {
-    //     result.current.changeOperator('Add');
-    //   });
-    //   act(() => {
-    //     result.current.addToNumberField(2);
-    //   });
-    //   act(() => {
-    //     result.current.changeOperator('Add');
-    //   });
+        // Act
+        act(() => {
+          result.current.addToNumberField(valueA);
+        });
+        act(() => {
+          result.current.changeOperator(operator);
+        });
+        act(() => {
+          result.current.addToNumberField(valueB);
+        });
+        act(() => {
+          result.current.changeOperator(operator);
+        });
+        act(() => {
+          result.current.addToNumberField(valueC);
+        });
+        act(() => {
+          result.current.changeOperator(operator);
+        });
 
-    //   // Assert
-    //   expect(result.current.numberFieldValue).toEqual('6');
-    // });
+        // Assert
+        expect(result.current.numberFieldValue).toEqual(
+          expectedNumberFieldValue
+        );
+      }
+    );
   });
 
   describe('changeOperator', () => {
