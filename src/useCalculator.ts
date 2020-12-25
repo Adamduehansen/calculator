@@ -6,6 +6,7 @@ const useCalculator = function () {
   const [numberFieldValue, setNumberFieldValue] = useState<string>('0');
   const [startNewNumber, setStartNewNumber] = useState<boolean>(false);
   const [valueA, setValueA] = useState(0);
+  const [operator, setOperator] = useState<Operator>();
 
   const addToNumberField = useCallback(
     (number: number) => {
@@ -22,6 +23,7 @@ const useCalculator = function () {
   const changeOperator = useCallback(
     (operator: Operator) => {
       setStartNewNumber(true);
+      setOperator(operator);
       const enteredValue = parseInt(numberFieldValue);
       const result = getResult(operator, valueA, enteredValue);
       setValueA(result);
@@ -29,6 +31,18 @@ const useCalculator = function () {
     },
     [numberFieldValue, valueA]
   );
+
+  const calculate = useCallback(() => {
+    if (!operator) {
+      return;
+    }
+
+    setStartNewNumber(true);
+    const enteredValue = parseInt(numberFieldValue);
+    const result = getResult(operator!, valueA, enteredValue);
+    setValueA(result);
+    setNumberFieldValue(result.toString());
+  }, [operator, numberFieldValue, valueA]);
 
   const getResult = function (
     operator: Operator,
@@ -39,7 +53,7 @@ const useCalculator = function () {
       case 'Add':
         return valueA + valueB;
       case 'Subtract':
-        return valueA - valueB;
+        return valueA === 0 ? valueB : valueA - valueB;
       case 'Times':
         return (valueA === 0 ? 1 : valueA) * valueB;
       case 'Divide':
@@ -52,6 +66,7 @@ const useCalculator = function () {
   return {
     numberFieldValue,
     addToNumberField,
+    calculate,
     changeOperator,
   };
 };

@@ -84,11 +84,11 @@ describe('useCalculator', () => {
 
     test.each([
       ['Add' as Operator, 2, 3, 2, '7'],
-      ['Subtract' as Operator, 2, 3, 2, '-7'],
+      ['Subtract' as Operator, 2, 3, 2, '-3'],
       ['Times' as Operator, 2, 3, 2, '12'],
       ['Divide' as Operator, 8, 2, 4, '1'],
     ])(
-      'should calculate result with multiple operators',
+      'should calculate result with operators: %o',
       (operator, valueA, valueB, valueC, expectedNumberFieldValue) => {
         // Arrange
         const { result } = renderHook(() => useCalculator());
@@ -144,32 +144,57 @@ describe('useCalculator', () => {
     });
   });
 
-  // describe.skip('calculate', () => {
-  //   test('should calculate on add operator', () => {
-  //     // Arrange
-  //     const { result } = renderHook(() => useCalculator());
+  describe('calculate', () => {
+    test('should do nothing if calculated with no previous value', () => {
+      // Arrange
+      const { result } = renderHook(() => useCalculator());
 
-  //     // Act
-  //     act(() => {
-  //       result.current.addToNumberField(2);
-  //     });
+      // Act
+      act(() => {
+        result.current.addToNumberField(2);
+      });
 
-  //     act(() => {
-  //       result.current.changeOperator('Add');
-  //     });
+      act(() => {
+        result.current.calculate();
+      });
 
-  //     act(() => {
-  //       result.current.addToNumberField(2);
-  //     });
+      // Assert
+      expect(result.current.numberFieldValue).toEqual('2');
+    });
 
-  //     act(() => {
-  //       result.current.calculate();
-  //     });
+    test.each([
+      ['Add' as Operator, 2, 2, '4'],
+      ['Subtract' as Operator, 4, 2, '2'],
+      ['Times' as Operator, 4, 2, '8'],
+      ['Divide' as Operator, 8, 2, '4'],
+    ])(
+      'should calculate with operator: %o',
+      (operator: Operator, valueA, valueB, expected) => {
+        // Arrange
+        const { result } = renderHook(() => useCalculator());
 
-  //     // Assert
-  //     expect(result.current.numberFieldValue).toEqual('4');
-  //   });
-  // });
+        // Act
+        act(() => {
+          result.current.addToNumberField(valueA);
+        });
+
+        act(() => {
+          result.current.changeOperator(operator);
+        });
+
+        act(() => {
+          result.current.addToNumberField(valueB);
+        });
+
+        act(() => {
+          result.current.calculate();
+        });
+
+        // Assert
+        expect(result.current.numberFieldValue).toEqual(expected);
+      }
+    );
+  });
 
   // describe('clear', () => {
   //   test('should reset the numberFieldValue to 0', () => {
