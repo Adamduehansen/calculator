@@ -258,6 +258,43 @@ describe('useCalculator', () => {
       // Assert
       expect(result.current.numberFieldValue).toEqual('5');
     });
+
+    test('should calculate upon another calculation', () => {
+      // Arrange
+      const { result } = renderHook(() => useCalculator());
+
+      // Act
+      act(() => {
+        result.current.addToNumberField(2);
+      });
+
+      act(() => {
+        result.current.changeOperator('Add');
+      });
+
+      act(() => {
+        result.current.addToNumberField(3);
+      });
+
+      act(() => {
+        result.current.calculate();
+      });
+
+      act(() => {
+        result.current.changeOperator('Times');
+      });
+
+      act(() => {
+        result.current.addToNumberField(2);
+      });
+
+      act(() => {
+        result.current.calculate();
+      });
+
+      // Assert
+      expect(result.current.numberFieldValue).toEqual('10');
+    });
   });
 
   // describe('clear', () => {

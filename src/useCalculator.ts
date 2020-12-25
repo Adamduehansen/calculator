@@ -28,7 +28,8 @@ const useCalculator = function () {
         setValueA(result);
         setNumberFieldValue(result.toString());
       } else {
-        setValueA(enteredValue);
+        const result = getResult(newOperator, valueA, enteredValue);
+        setValueA(result);
       }
       setStartNewNumber(true);
       setOperator(newOperator);
@@ -43,7 +44,9 @@ const useCalculator = function () {
     setStartNewNumber(true);
     const enteredValue = parseInt(numberFieldValue);
     const result = getResult(operator!, valueA, enteredValue);
+    setValueA(0);
     setNumberFieldValue(result.toString());
+    setOperator(undefined);
   }, [operator, numberFieldValue, valueA]);
 
   const getResult = function (
