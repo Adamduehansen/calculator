@@ -43,7 +43,7 @@ describe('useCalculator', () => {
       expect(result.current.numberFieldValue).toEqual('1');
     });
 
-    test('should should add multiple numbers to the numberFieldValue', () => {
+    test('should add multiple numbers to the numberFieldValue', () => {
       // Arrange
       const { result } = renderHook(() => useCalculator());
 
@@ -55,31 +55,6 @@ describe('useCalculator', () => {
 
       // Assert
       expect(result.current.numberFieldValue).toEqual('12');
-    });
-
-    test('should start new number when operator is set', () => {
-      // Arrange
-      const { result } = renderHook(() => useCalculator());
-
-      // Act
-      act(() => {
-        result.current.addToNumberField(1);
-      });
-      act(() => {
-        result.current.changeOperator('Add');
-      });
-      act(() => {
-        result.current.addToNumberField(3);
-      });
-      act(() => {
-        result.current.changeOperator('Add');
-      });
-      act(() => {
-        result.current.addToNumberField(2);
-      });
-
-      // Assert
-      expect(result.current.numberFieldValue).toEqual('2');
     });
 
     test.each([
@@ -119,6 +94,47 @@ describe('useCalculator', () => {
         );
       }
     );
+
+    test('should calculate with different combinations of operators', () => {
+      // Arrange
+      const { result } = renderHook(() => useCalculator());
+
+      // Act
+      act(() => {
+        result.current.addToNumberField(5);
+      });
+
+      act(() => {
+        result.current.changeOperator('Add');
+      });
+
+      act(() => {
+        result.current.addToNumberField(6);
+      });
+
+      act(() => {
+        result.current.changeOperator('Subtract');
+      });
+
+      act(() => {
+        result.current.addToNumberField(1);
+      });
+
+      act(() => {
+        result.current.changeOperator('Times');
+      });
+
+      act(() => {
+        result.current.addToNumberField(2);
+      });
+
+      act(() => {
+        result.current.changeOperator('Divide');
+      });
+
+      // Assert
+      expect(result.current.numberFieldValue).toEqual('20');
+    });
   });
 
   describe('changeOperator', () => {
@@ -141,6 +157,25 @@ describe('useCalculator', () => {
 
       // Assert
       expect(result.current.numberFieldValue).toEqual('12');
+    });
+
+    test('should start new number when operator is set', () => {
+      // Arrange
+      const { result } = renderHook(() => useCalculator());
+
+      // Act
+      act(() => {
+        result.current.addToNumberField(1);
+      });
+      act(() => {
+        result.current.changeOperator('Add');
+      });
+      act(() => {
+        result.current.addToNumberField(3);
+      });
+
+      // Assert
+      expect(result.current.numberFieldValue).toEqual('3');
     });
   });
 
@@ -194,6 +229,35 @@ describe('useCalculator', () => {
         expect(result.current.numberFieldValue).toEqual(expected);
       }
     );
+
+    test('should start new number if number is added after calculation', () => {
+      // Arrange
+      const { result } = renderHook(() => useCalculator());
+
+      // Act
+      act(() => {
+        result.current.addToNumberField(2);
+      });
+
+      act(() => {
+        result.current.changeOperator('Times');
+      });
+
+      act(() => {
+        result.current.addToNumberField(4);
+      });
+
+      act(() => {
+        result.current.calculate();
+      });
+
+      act(() => {
+        result.current.addToNumberField(5);
+      });
+
+      // Assert
+      expect(result.current.numberFieldValue).toEqual('5');
+    });
   });
 
   // describe('clear', () => {

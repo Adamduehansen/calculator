@@ -21,26 +21,28 @@ const useCalculator = function () {
   );
 
   const changeOperator = useCallback(
-    (operator: Operator) => {
-      setStartNewNumber(true);
-      setOperator(operator);
+    (newOperator: Operator) => {
       const enteredValue = parseInt(numberFieldValue);
-      const result = getResult(operator, valueA, enteredValue);
-      setValueA(result);
-      setNumberFieldValue(result.toString());
+      if (operator) {
+        const result = getResult(operator, valueA, enteredValue);
+        setValueA(result);
+        setNumberFieldValue(result.toString());
+      } else {
+        setValueA(enteredValue);
+      }
+      setStartNewNumber(true);
+      setOperator(newOperator);
     },
-    [numberFieldValue, valueA]
+    [numberFieldValue, valueA, operator]
   );
 
   const calculate = useCallback(() => {
     if (!operator) {
       return;
     }
-
     setStartNewNumber(true);
     const enteredValue = parseInt(numberFieldValue);
     const result = getResult(operator!, valueA, enteredValue);
-    setValueA(result);
     setNumberFieldValue(result.toString());
   }, [operator, numberFieldValue, valueA]);
 
