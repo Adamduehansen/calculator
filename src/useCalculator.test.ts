@@ -297,18 +297,18 @@ describe('useCalculator', () => {
     });
   });
 
-  // describe('clear', () => {
-  //   test('should reset the numberFieldValue to 0', () => {
-  //     // Arrange
-  //     const { result } = renderHook(() => useCalculator());
+  describe('clear', () => {
+    test('should reset the numberFieldValue to 0', () => {
+      // Arrange
+      const { result } = renderHook(() => useCalculator());
 
-  //     // Act
-  //     act(() => {
-  //       result.current.clear();
-  //     });
+      // Act
+      act(() => {
+        result.current.clear();
+      });
 
-  //     // Assert
-  //     expect(result.current.numberFieldValue).toEqual('0');
-  //   });
-  // });
+      // Assert
+      expect(result.current.numberFieldValue).toEqual('0');
+    });
+  });
 });

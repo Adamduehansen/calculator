@@ -2,6 +2,25 @@ import { useCallback, useState } from 'react';
 
 export type Operator = 'Add' | 'Subtract' | 'Times' | 'Divide';
 
+const getResult = function (
+  operator: Operator,
+  valueA: number,
+  valueB: number
+) {
+  switch (operator) {
+    case 'Add':
+      return valueA + valueB;
+    case 'Subtract':
+      return valueA === 0 ? valueB : valueA - valueB;
+    case 'Times':
+      return (valueA === 0 ? 1 : valueA) * valueB;
+    case 'Divide':
+      return valueA === 0 ? valueB / 1 : valueA / valueB;
+    default:
+      throw Error('Operator not implemented.');
+  }
+};
+
 const useCalculator = function () {
   const [numberFieldValue, setNumberFieldValue] = useState<string>('0');
   const [startNewNumber, setStartNewNumber] = useState<boolean>(false);
@@ -49,30 +68,16 @@ const useCalculator = function () {
     setOperator(undefined);
   }, [operator, numberFieldValue, valueA]);
 
-  const getResult = function (
-    operator: Operator,
-    valueA: number,
-    valueB: number
-  ) {
-    switch (operator) {
-      case 'Add':
-        return valueA + valueB;
-      case 'Subtract':
-        return valueA === 0 ? valueB : valueA - valueB;
-      case 'Times':
-        return (valueA === 0 ? 1 : valueA) * valueB;
-      case 'Divide':
-        return valueA === 0 ? valueB / 1 : valueA / valueB;
-      default:
-        throw Error('Operator not implemented.');
-    }
-  };
+  const clear = useCallback(() => {
+    setNumberFieldValue('0');
+  }, []);
 
   return {
     numberFieldValue,
     addToNumberField,
     calculate,
     changeOperator,
+    clear,
   };
 };
 
