@@ -16,7 +16,7 @@ const App = function () {
   return (
     <View>
       <StatusBar style='auto' />
-      <SafeAreaView>
+      <SafeAreaView style={styles.container}>
         <TextInput style={styles.numberField} value={numberFieldValue} />
         <View style={styles.numberPadRow}>
           <Button
@@ -25,6 +25,7 @@ const App = function () {
               addToNumberField(7);
             }}
             type='Number'
+            style={styles.numberPadButton}
           />
           <Button
             title='8'
@@ -32,6 +33,7 @@ const App = function () {
               addToNumberField(8);
             }}
             type='Number'
+            style={styles.numberPadButton}
           />
           <Button
             title='9'
@@ -39,6 +41,7 @@ const App = function () {
               addToNumberField(9);
             }}
             type='Number'
+            style={styles.numberPadButton}
           />
           <Button
             title='÷'
@@ -46,6 +49,7 @@ const App = function () {
               changeOperator('Divide');
             }}
             type='Operator'
+            style={styles.numberPadButton}
           />
         </View>
         <View style={styles.numberPadRow}>
@@ -55,6 +59,7 @@ const App = function () {
               addToNumberField(4);
             }}
             type='Number'
+            style={styles.numberPadButton}
           />
           <Button
             title='5'
@@ -62,6 +67,7 @@ const App = function () {
               addToNumberField(5);
             }}
             type='Number'
+            style={styles.numberPadButton}
           />
           <Button
             title='6'
@@ -69,6 +75,7 @@ const App = function () {
               addToNumberField(6);
             }}
             type='Number'
+            style={styles.numberPadButton}
           />
           <Button
             title='✕'
@@ -76,6 +83,7 @@ const App = function () {
               changeOperator('Times');
             }}
             type='Operator'
+            style={styles.numberPadButton}
           />
         </View>
         <View style={styles.numberPadRow}>
@@ -85,6 +93,7 @@ const App = function () {
               addToNumberField(1);
             }}
             type='Number'
+            style={styles.numberPadButton}
           />
           <Button
             title='2'
@@ -92,6 +101,7 @@ const App = function () {
               addToNumberField(2);
             }}
             type='Number'
+            style={styles.numberPadButton}
           />
           <Button
             title='3'
@@ -99,6 +109,7 @@ const App = function () {
               addToNumberField(3);
             }}
             type='Number'
+            style={styles.numberPadButton}
           />
           <Button
             title='-'
@@ -106,6 +117,7 @@ const App = function () {
               changeOperator('Subtract');
             }}
             type='Operator'
+            style={styles.numberPadButton}
           />
         </View>
         <View style={styles.numberPadRow}>
@@ -115,14 +127,21 @@ const App = function () {
               addToNumberField(0);
             }}
             type='Number'
+            style={styles.numberPadButton}
           />
-          <Button title=',' onPress={() => {}} type='Operator' />
+          <Button
+            title=','
+            onPress={() => {}}
+            type='Operator'
+            style={styles.numberPadButton}
+          />
           <Button
             title='='
             onPress={() => {
               calculate();
             }}
             type='Operator'
+            style={styles.numberPadButton}
           />
           <Button
             title='+'
@@ -130,15 +149,22 @@ const App = function () {
               changeOperator('Add');
             }}
             type='Operator'
+            style={styles.numberPadButton}
           />
         </View>
-        <View style={styles.numberPadRow}>
+        <View
+          style={{
+            height: '10%',
+            width: '100%',
+          }}
+        >
           <Button
             title='Clear'
             onPress={() => {
               clear();
             }}
             type='Operator'
+            style={{ ...styles.numberPadButton, width: '100%', height: '100%' }}
           />
         </View>
       </SafeAreaView>
@@ -147,13 +173,25 @@ const App = function () {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    justifyContent: 'space-around',
+  },
   numberField: {
     textAlign: 'right',
+    height: '10%',
   },
   numberPadRow: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
+    height: '20%',
+  },
+  numberPadButton: {
+    width: '25%',
+    borderRadius: 10,
   },
 });
 
